@@ -1,0 +1,13 @@
+{
+  "usuarioNormal": {
+    "nome": "Gabriel Normal",
+    "email": "gabriel@normal.com",
+    "password": "normalsenha"
+  },
+
+  "usuarioAdm": {
+    "nome": "Gabriel Administrador",
+    "email": "gabriel@adm.com",
+    "password": "admsenha"
+  }
+}
