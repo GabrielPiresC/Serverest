@@ -12,5 +12,16 @@
   "type": "commonjs",
   "devDependencies": {
     "cypress": "^16.1.1"
-  }
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GabrielPiresC/Serverest.git"
+  },
+  "bugs": {
+    "url": "https://github.com/GabrielPiresC/Serverest/issues"
+  },
+  "homepage": "https://github.com/GabrielPiresC/Serverest#readme"
 }
