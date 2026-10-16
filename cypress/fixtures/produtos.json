@@ -1,0 +1,17 @@
+{
+  "produto1": {
+    "nome": "Televisão 4K TCL",
+    "preço": "2.374,05",
+    "descrição": "Transforme sua sala em um verdadeiro cinema com a Smart TV TCL 50P7L.",
+    "quantidade": "75",
+    "imagem": ""
+  },
+
+  "produto2": {
+    "nome": "MackBook Pro 2026",
+    "preço": "24.999,90",
+    "descrição": "Desempenho Profissional. Inteligência Revolucionária.",
+    "quantidade": "120",
+    "imagem": ""
+  }
+}
