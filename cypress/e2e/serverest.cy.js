@@ -4,58 +4,86 @@ describe('Serverest - Front Dev', () => {
     })
 
     // CT01
-    it('Verifica se cria cadastro normal com sucesso', () => {
-      cy.get('[data-testid="cadastrar"]').click()
-      cy.fixture('usuarios').then((usuarios) => {
-        cy.fillCadastro(usuarios.cadastroNormal)
-      })
+    it('CT01 - Cadastra usuário normal com sucesso', () => {
+      cy.gerarUsuario().then((usuario) => {
 
-      cy.get('.alert').should('be.visible').and('contain.text', 'Cadastro realizado com sucesso')
-      cy.url().should('include', '/produtos')
+        cy.get('[data-testid="cadastrar"]').click()
+        cy.preencherCadastro(usuario)
+
+        cy.get('.alert')
+          .should('be.visible')
+          .and('contain.text', 'Cadastro realizado com sucesso')
+
+        cy.url().should('include', '/home')
+      })
     })
 
     // CT02
-    it('Verifica falha ao cadastrar email normal já cadastrado', () => {
-      cy.get('[data-testid="cadastrar"]').click()
-      cy.fixture('usuarios').then((usuarios) => {
-        cy.fillCadastro(usuarios.cadastroNormal)
-      })
+    it('CT02 - Impede cadastro de email já existente', () => {
+      cy.gerarUsuario().then((usuario) => {
 
-      cy.get('.alert').should('be.visible').and('contain.text', 'Este email já está sendo usado')
+        cy.criarUsuarioApi(usuario)
+
+        cy.get('[data-testid="cadastrar"]').click()
+        cy.preencherCadastro(usuario)
+
+        cy.get('.alert')
+          .should('be.visible')
+          .and('contain.text', 'Este email já está sendo usado')
+      })
     })
 
     // CT03
-    it('Verifica se cria cadastro administrador com sucesso', () => {
-      cy.get('[data-testid="cadastrar"]').click()
-      cy.fixture('usuarios').then((usuarios) => {
-        cy.fillCadastro(usuarios.cadastroAdm)
-      })
-      cy.get('[data-testid="checkbox"]').check()
-      cy.get('[data-testid="cadastrar"]').click()
+    it('CT03 - Cadastra administrador com sucesso', () => {
+      cy.gerarUsuario('true').then((usuario) => {
 
-      cy.get('.alert').should('be.visible').and('contain.text', 'Cadastro realizado com sucesso')
-      cy.url().should('include', '/admin/home')
+        cy.get('[data-testid="cadastrar"]').click()
+        cy.preencherCadastro(usuario)
+
+        cy.get('.alert')
+          .should('be.visible')
+          .and('contain.text', 'Cadastro realizado com sucesso')
+
+        cy.url().should('include', '/admin/home')
+      })
     })
 
     // CT04
-    it('Verifica falha ao cadastrar email administrador já cadastrado', () => {
-      cy.get('[data-testid="cadastrar"]').click()
-      cy.fixture('usuarios').then((usuarios) => {
-        cy.fillCadastro(usuarios.cadastroAdm)
-      })
+    it('CT04 - Impede cadastro de administrador com email existente', () => {
+      cy.gerarUsuario('true').then((usuario) => {
 
-      cy.get('.alert').should('be.visible').and('contain.text', 'Este email já está sendo usado')
+        cy.criarUsuarioApi(usuario)
+
+        cy.get('[data-testid="cadastrar"]').click()
+        cy.preencherCadastro(usuario)
+
+        cy.get('.alert')
+          .should('be.visible')
+          .and('contain.text', 'Este email já está sendo usado')
+      })
     })
     
     // CT05
-    it('Verifica se cadastra produtos com sucesso', () => {
-      cy.fixture('usuarios').then((usuarios) => {
-        cy.fillLogin(usuarios.usuarioAdm)
-      })
+    it.only('CT05 - Cadastra produto com sucesso', () => {
+
+    cy.gerarUsuario('true').then((usuarioAdm) => {
+
+      cy.criarUsuarioApi(usuarioAdm)
+
+      cy.fillLogin(usuarioAdm)
+
+      cy.url().should('include', '/admin/home')
 
       cy.get('[data-testid="cadastrarProdutos"]').click()
-      cy.fixture('produtos').then((produtos) => {
-        cy.fillProduct(produtos.produto1)
+
+      cy.gerarProduto().then((produto) => {
+
+        cy.fillProduct(produto)
+
+        cy.get('.alert')
+          .should('be.visible')
+          .and('contain.text', 'Cadastro realizado com sucesso')
       })
     })
+  })
 })
