@@ -7,7 +7,7 @@ describe('Serverest - Front Dev', () => {
     it('Verifica se cria cadastro normal com sucesso', () => {
       cy.get('[data-testid="cadastrar"]').click()
       cy.fixture('usuarios').then((usuarios) => {
-        cy.fillLogin(usuarios.usuarioNormal)
+        cy.fillCadastro(usuarios.cadastroNormal)
       })
 
       cy.get('.alert').should('be.visible').and('contain.text', 'Cadastro realizado com sucesso')
@@ -15,10 +15,10 @@ describe('Serverest - Front Dev', () => {
     })
 
     // CT02
-    it('Verifica falha ao cadastrar email já cadastrado', () => {
+    it('Verifica falha ao cadastrar email normal já cadastrado', () => {
       cy.get('[data-testid="cadastrar"]').click()
       cy.fixture('usuarios').then((usuarios) => {
-        cy.fillLogin(usuarios.usuarioNormal)
+        cy.fillCadastro(usuarios.cadastroNormal)
       })
 
       cy.get('.alert').should('be.visible').and('contain.text', 'Este email já está sendo usado')
@@ -28,19 +28,20 @@ describe('Serverest - Front Dev', () => {
     it('Verifica se cria cadastro administrador com sucesso', () => {
       cy.get('[data-testid="cadastrar"]').click()
       cy.fixture('usuarios').then((usuarios) => {
-        cy.fillLogin(usuarios.usuarioAdm)
+        cy.fillCadastro(usuarios.cadastroAdm)
       })
       cy.get('[data-testid="checkbox"]').check()
+      cy.get('[data-testid="cadastrar"]').click()
 
       cy.get('.alert').should('be.visible').and('contain.text', 'Cadastro realizado com sucesso')
       cy.url().should('include', '/admin/home')
     })
 
     // CT04
-    it('Verifica falha ao cadastrar email já cadastrado', () => {
+    it('Verifica falha ao cadastrar email administrador já cadastrado', () => {
       cy.get('[data-testid="cadastrar"]').click()
       cy.fixture('usuarios').then((usuarios) => {
-        cy.fillLogin(usuarios.usuarioAdm)
+        cy.fillCadastro(usuarios.cadastroAdm)
       })
 
       cy.get('.alert').should('be.visible').and('contain.text', 'Este email já está sendo usado')
@@ -48,12 +49,13 @@ describe('Serverest - Front Dev', () => {
     
     // CT05
     it('Verifica se cadastra produtos com sucesso', () => {
-      cy.get('[data-testid="cadastrar"]').click()
       cy.fixture('usuarios').then((usuarios) => {
-        cy.fillLogin(usuarios.usuarioNormal)
+        cy.fillLogin(usuarios.usuarioAdm)
       })
 
-      cy.get('.alert').should('be.visible').and('contain.text', 'Cadastro realizado com sucesso')
-      cy.url().should('include', '/produtos')
+      cy.get('[data-testid="cadastrarProdutos"]').click()
+      cy.fixture('produtos').then((produtos) => {
+        cy.fillProduct(produtos.produto1)
+      })
     })
 })

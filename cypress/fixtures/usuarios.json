@@ -1,13 +1,23 @@
 {
-  "usuarioNormal": {
+  "cadastroNormal": {
     "nome": "Gabriel Normal",
     "email": "gabriel@normal.com",
     "password": "normalsenha"
   },
 
-  "usuarioAdm": {
+  "cadastroAdm": {
     "nome": "Gabriel Administrador",
     "email": "gabriel@adm.com",
     "password": "admsenha"
+  },
+
+  "usuarioNormal": {
+    "email": "gabriel@normal.com",
+    "senha": "normalsenha"
+  },
+
+  "usuarioAdm": {
+    "email": "gabriel@adm.com",
+    "senha": "admsenha"
   }
 }
