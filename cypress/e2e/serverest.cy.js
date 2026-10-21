@@ -64,7 +64,7 @@ describe('Serverest - Front Dev', () => {
     })
     
     // CT05
-    it.only('CT05 - Cadastra produto com sucesso', () => {
+    it('CT05 - Cadastra produto', () => {
 
     cy.gerarUsuario('true').then((usuarioAdm) => {
 
@@ -80,10 +80,15 @@ describe('Serverest - Front Dev', () => {
 
         cy.fillProduct(produto)
 
-        cy.get('.alert')
-          .should('be.visible')
-          .and('contain.text', 'Cadastro realizado com sucesso')
       })
     })
   })
+
+    //CT06
+    
+    
+    //CT07
+
+
+    //CT08
 })

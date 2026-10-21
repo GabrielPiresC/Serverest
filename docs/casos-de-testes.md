@@ -82,7 +82,7 @@ O cadastro não deve ser realizado, a mensagem "Este email já está sendo usado
 
 ---
 
-## CT05 - Cadastrar produto com sucesso
+## CT05 - Cadastrar produto
 
 ### Prioridade: -- | Criticidade: --
 
@@ -101,4 +101,67 @@ Deve existir um usuário administrador válido para realizar o login no sistema.
 
 ### Resultado esperado
 
-O produto 
+O produto é criado e incluído na lista de produtos.
+
+---
+
+## CT06 - Listar, editar e excluir produtos cadastrados 
+
+### Prioridade: -- | Criticidade: --
+
+### Pré-condição
+
+Deve estar logado como administrador e clicar em "Listar Produtos".
+
+**Dado** que realizo o login como administrador 
+**E** acesso a funcionalidade "Listar produtos"  
+**E** procuro o usuário pela id  
+**Quando** clico em "editar"  
+**E** clico em "Cadastrar"  
+**Então** o usuário deve ser cadastrado com sucesso.
+
+### Resultado esperado
+
+O usuário é criado e incluído na lista de usuários.
+
+---
+
+## CT07 - Cadastrar usuário logado no sistema
+
+### Prioridade: -- | Criticidade: --
+
+### Pré-condição
+
+Deve estar logado como administrador e clicar em "Cadastrar Usuários".
+
+**Dado** que realizo o login como administrador 
+**E** acesso a funcionalidade "Cadastrar Usuários"  
+**E** possuo dados válidos e únicos para um novo usuário  
+**Quando** preencho os campos "nome", "email" e "senha"  
+**E** clico em "Cadastrar"  
+**Então** o usuário deve ser cadastrado com sucesso.
+
+### Resultado esperado
+
+O usuário é criado e incluído na lista de usuários.
+
+---
+
+## CT08 - Listar, editar e excluir usuários
+
+### Prioridade: -- | Criticidade: --
+
+### Pré-condição
+
+Deve estar logado como administrador e clicar em "Cadastrar Usuários".
+
+**Dado** que realizo o login como administrador 
+**E** acesso a funcionalidade "Cadastrar Usuários"  
+**E** possuo dados válidos e únicos para um novo usuário  
+**Quando** preencho os campos "nome", "email" e "senha"  
+**E** clico em "Cadastrar"  
+**Então** o usuário deve ser cadastrado com sucesso.
+
+### Resultado esperado
+
+O usuário é criado e incluído na lista de usuários.
