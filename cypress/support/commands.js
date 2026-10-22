@@ -53,3 +53,14 @@ Cypress.Commands.add('fillProduct', (produto) => {
 
   cy.get('[data-testid="cadastarProdutos"]').click()
 })
+
+Cypress.Commands.add('criarProdutoApi', (produto) => {
+  cy.request({
+    method: 'PUT',
+    url: 'https://serverest.dev/produtos',
+    body: produto
+  }).then((response) => {
+    expect(response.status).to.eq(201)
+    return response.body
+  })
+})
