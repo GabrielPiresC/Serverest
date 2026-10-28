@@ -15,6 +15,17 @@ describe('Cadastro de usuários', () => {
         .and('contain.text', 'Cadastro realizado com sucesso')
 
       cy.url().should('include', '/home')
+
+      cy.request({
+        method: 'POST',
+        url: 'https://serverest.dev/login',
+        body: {
+          email: usuario.email,
+          password: usuario.password
+        }
+      }).then((response) => {
+          expect(response.status).to.eq(200)
+      })
     })
   })
 
@@ -30,6 +41,14 @@ describe('Cadastro de usuários', () => {
       cy.get('.alert')
         .should('be.visible')
         .and('contain.text', 'Este email já está sendo usado')
+
+      cy.request({
+        method: 'POST',
+        url: 'https://serverest.dev/usuarios',
+        failOnStatusCode: false,
+      }).then((response) => {
+          expect(response.status).to.eq(400)
+      })
     })
   })
 
@@ -45,6 +64,17 @@ describe('Cadastro de usuários', () => {
         .and('contain.text', 'Cadastro realizado com sucesso')
 
       cy.url().should('include', '/admin/home')
+      
+      cy.request({
+        method: 'POST',
+        url: 'https://serverest.dev/login',
+        body: {
+          email: usuario.email,
+          password: usuario.password
+        }
+      }).then((response) => {
+        expect(response.status).to.eq(200)
+      })
     })
   })
 
@@ -60,6 +90,14 @@ describe('Cadastro de usuários', () => {
       cy.get('.alert')
         .should('be.visible')
         .and('contain.text', 'Este email já está sendo usado')
+
+      cy.request({
+        method: 'POST',
+        url: 'https://serverest.dev/usuarios',
+        failOnStatusCode: false,
+      }).then((response) => {
+          expect(response.status).to.eq(400)
+      })
     })
   })
 })
@@ -86,11 +124,18 @@ describe('Gerenciamento de produtos', () => {
     cy.gerarProduto().then((produto) => {
 
       cy.fillProduct(produto)
+
+      cy.request({
+        method: 'GET',
+        url: 'https://serverest.dev/produtos?nome=${produto.nome}'
+      }).then((response) => {
+        expect(response.status).to.eq(200)
+      })
     })
   })
 
     //CT06
-  it.only('CT06 - Edita produto', () => {
+  it('CT06 - Edita produto', () => {
 
     cy.gerarProduto().then((produto) => {
 
@@ -122,4 +167,38 @@ describe('Gerenciamento de produtos', () => {
       cy.contains(produto.nome).should('not.exist')
     })
   })
+})
+
+describe('Lista de compras', () => {    
+  beforeEach(() => {
+    cy.visit('https://front.serverest.dev/login')
+    
+    cy.gerarUsuario().then((usuario) => {
+      cy.criarUsuarioApi(usuario)
+
+      cy.fillLogin(usuario)
+
+      cy.url().should('include', '/home')
+    })
+
+    cy.gerarUsuario('true').then((usuarioAdm) => {
+      cy.criarUsuarioApi(usuarioAdm)
+
+      cy.loginApi(usuarioAdm).then((token) => {
+        
+        cy.gerarProduto().then((produto) => {
+          cy.criarProdutoApi(produto, token)
+
+          cy.wrap(produto).as('produto')
+        })
+      })
+    })
+  })
+
+  it('CT08 - Adiciona produto à lista de compras', () => {
+    cy.get('@produto').then((produto) => {
+      cy.get('[data-testid="adicionarCarrinho"]').click()
+    })
+  })
+
 })

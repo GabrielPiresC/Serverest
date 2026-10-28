@@ -64,3 +64,18 @@ Cypress.Commands.add('criarProdutoApi', (produto) => {
     return response.body
   })
 })
+
+Cypress.Commands.add('loginApi', (usuario) => {
+  return cy.request({
+    method: 'POST',
+    url: 'https://serverest.dev/login',
+    body: {
+      email: usuario.email,
+      password: usuario.password
+    }
+  }).then((response) => {
+    expect(response.status).to.eq(200)
+
+    return response.body.authorization
+  })
+})
