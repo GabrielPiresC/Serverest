@@ -45,6 +45,7 @@ describe('Cadastro de usuários', () => {
       cy.request({
         method: 'POST',
         url: 'https://serverest.dev/usuarios',
+        body: usuario,
         failOnStatusCode: false,
       }).then((response) => {
           expect(response.status).to.eq(400)
@@ -94,6 +95,7 @@ describe('Cadastro de usuários', () => {
       cy.request({
         method: 'POST',
         url: 'https://serverest.dev/usuarios',
+        body: usuario,
         failOnStatusCode: false,
       }).then((response) => {
           expect(response.status).to.eq(400)
@@ -127,7 +129,7 @@ describe('Gerenciamento de produtos', () => {
 
       cy.request({
         method: 'GET',
-        url: 'https://serverest.dev/produtos?nome=${produto.nome}'
+        url: `https://serverest.dev/produtos?nome=${produto.nome}`
       }).then((response) => {
         expect(response.status).to.eq(200)
       })
@@ -196,9 +198,94 @@ describe('Lista de compras', () => {
   })
 
   it('CT08 - Adiciona produto à lista de compras', () => {
+
     cy.get('@produto').then((produto) => {
-      cy.get('[data-testid="adicionarCarrinho"]').click()
+
+      cy.get('[data-testid="pesquisar"]')
+        .type(produto.nome)
+
+      cy.get('[data-testid="botaoPesquisar"]')
+        .click()
+
+      cy.contains('h5', produto.nome)
+        .should('be.visible')
+        .parents('.card')
+        .within(() => {
+          cy.get('[data-testid="adicionarNaLista"]').click()
+        })
+
+      cy.url().should('include', '/minhaListaDeProdutos')
+
+      cy.contains(produto.nome)
+        .should('be.visible')
     })
   })
 
+  describe('Produto já adicionado à lista de compras', () => {
+
+    beforeEach(() => {
+
+      cy.get('@produto').then((produto) => {
+
+        cy.get('[data-testid="pesquisar"]')
+          .type(produto.nome)
+
+        cy.get('[data-testid="botaoPesquisar"]')
+          .click()
+
+        cy.contains('h5', produto.nome)
+          .should('be.visible')
+          .parents('.card')
+          .within(() => {
+            cy.get('[data-testid="adicionarNaLista"]').click()
+          })
+
+        cy.url().should('include', '/minhaListaDeProdutos')
+
+        cy.contains(produto.nome)
+          .should('be.visible')
+      })
+    })
+
+    it('CT09 - Aumenta quantidade de produto na lista de compras', () => {
+
+      cy.get('@produto').then((produto) => {
+
+        cy.getQuantidadeProduto(produto)
+          .should('have.text', '1')
+
+        cy.alterarQuantidadeProduto(produto, 'aumentar')
+
+        cy.getQuantidadeProduto(produto)
+          .should('have.text', '2')
+      })
+    })
+
+    it('CT10 - Diminui quantidade de produto na lista de compras', () => {
+
+      cy.get('@produto').then((produto) => {
+
+        cy.alterarQuantidadeProduto(produto, 'aumentar')
+
+        cy.getQuantidadeProduto(produto)
+          .should('have.text', '2')
+
+        cy.alterarQuantidadeProduto(produto, 'diminuir')
+
+        cy.getQuantidadeProduto(produto)
+          .should('have.text', '1')
+      })
+    })
+
+    it.only('CT11 - Remove produto da lista de compras', () => {
+
+      cy.get('@produto').then((produto) => {
+        cy.get('[data-testid="limparLista"]')
+          .click()
+
+        cy.get('[data-testid="shopping-cart-empty-message"]')
+          .should('have.text', 'Seu carrinho está vazio')
+      })
+    })
+  })
 })

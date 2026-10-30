@@ -54,13 +54,17 @@ Cypress.Commands.add('fillProduct', (produto) => {
   cy.get('[data-testid="cadastarProdutos"]').click()
 })
 
-Cypress.Commands.add('criarProdutoApi', (produto) => {
-  cy.request({
-    method: 'PUT',
+Cypress.Commands.add('criarProdutoApi', (produto, token) => {
+  return cy.request({
+    method: 'POST',
     url: 'https://serverest.dev/produtos',
+    headers: {
+      Authorization: token
+    },
     body: produto
   }).then((response) => {
     expect(response.status).to.eq(201)
+
     return response.body
   })
 })
@@ -78,4 +82,27 @@ Cypress.Commands.add('loginApi', (usuario) => {
 
     return response.body.authorization
   })
+})
+
+Cypress.Commands.add('getQuantidadeProduto', (produto) => {
+  return cy.contains('[data-testid="shopping-cart-product-name"]', produto.nome)
+    .parents('.card-body')
+    .find('[data-testid="product-increase-quantity"]')
+    .prev()
+    .find('p')
+})
+
+Cypress.Commands.add('alterarQuantidadeProduto', (produto, acao) => {
+  cy.contains('[data-testid="shopping-cart-product-name"]', produto.nome)
+    .parents('.card-body')
+    .within(() => {
+
+      if (acao === 'aumentar') {
+        cy.get('[data-testid="product-increase-quantity"]').click()
+      }
+
+      if (acao === 'diminuir') {
+        cy.get('[data-testid="product-decrease-quantity"]').click()
+      }
+    })
 })
