@@ -1,6 +1,6 @@
 # Cenários de teste
 
-## CT01 - Cadastrar usuário comum com sucesso
+## CT01 - Cadastrar usuário normal com sucesso
 
 ### Prioridade: -- | Criticidade: --
 
@@ -18,7 +18,7 @@ O cadastro deve ser realizado com sucesso, deve ser exibida a mensagem "Cadastro
 
 ---
 
-## CT02 - Impedir cadastro de usuário com email já cadastrado
+## CT02 - Impede cadastro de email já existente
 
 ### Prioridade: -- | Criticidade: --
 
@@ -50,7 +50,8 @@ O cadastro não deve ser realizado, a mensagem "Este email já está sendo usado
 **Quando** preencho os campos "nome", "email" e "senha"  
 **E** marco a opção "Cadastrar como administrador"  
 **E** clico em "Cadastrar"  
-**Então** o cadastro deve ser realizado com sucesso  
+**Então** o cadastro deve ser realizado com sucesso
+**E** deve exibir a mensagem "Cadastro realizado com sucesso"  
 **E** o usuário deve ser redirecionado para a home administrativa.
 
 ### Resultado esperado

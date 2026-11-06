@@ -197,6 +197,7 @@ describe('Lista de compras', () => {
     })
   })
 
+  //CT08
   it('CT08 - Adiciona produto à lista de compras', () => {
 
     cy.get('@produto').then((produto) => {
@@ -247,6 +248,7 @@ describe('Lista de compras', () => {
       })
     })
 
+    //CT09
     it('CT09 - Aumenta quantidade de produto na lista de compras', () => {
 
       cy.get('@produto').then((produto) => {
@@ -261,6 +263,7 @@ describe('Lista de compras', () => {
       })
     })
 
+    //CT10
     it('CT10 - Diminui quantidade de produto na lista de compras', () => {
 
       cy.get('@produto').then((produto) => {
@@ -277,7 +280,8 @@ describe('Lista de compras', () => {
       })
     })
 
-    it.only('CT11 - Remove produto da lista de compras', () => {
+    //CT11
+    it('CT11 - Remove produto da lista de compras', () => {
 
       cy.get('@produto').then((produto) => {
         cy.get('[data-testid="limparLista"]')
