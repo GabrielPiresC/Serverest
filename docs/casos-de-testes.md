@@ -106,7 +106,7 @@ O produto é criado e incluído na lista de produtos.
 
 ---
 
-## CT06 - Listar, editar e excluir produtos cadastrados 
+## CT06 - Edita produto 
 
 ### Prioridade: -- | Criticidade: --
 
@@ -118,51 +118,110 @@ Deve estar logado como administrador e clicar em "Listar Produtos".
 **E** acesso a funcionalidade "Listar produtos"  
 **E** procuro o usuário pela id  
 **Quando** clico em "editar"  
-**E** clico em "Cadastrar"  
-**Então** o usuário deve ser cadastrado com sucesso.
+**E** altero qualquer campo  
+**Quando** clico em "salvar"
+**Então** o produto deve ser atualizado com sucesso.
 
 ### Resultado esperado
 
-O usuário é criado e incluído na lista de usuários.
+O produto é salvo com as novas informações editadas.
 
 ---
 
-## CT07 - Cadastrar usuário logado no sistema
+## CT07 - Exclui produto
 
 ### Prioridade: -- | Criticidade: --
 
 ### Pré-condição
 
-Deve estar logado como administrador e clicar em "Cadastrar Usuários".
+Deve estar logado como administrador e clicar em "Excluir Produto".
 
 **Dado** que realizo o login como administrador 
-**E** acesso a funcionalidade "Cadastrar Usuários"  
-**E** possuo dados válidos e únicos para um novo usuário  
-**Quando** preencho os campos "nome", "email" e "senha"  
-**E** clico em "Cadastrar"  
-**Então** o usuário deve ser cadastrado com sucesso.
+**E** acesso a funcionalidade "Listar produtos"  
+**E** procuro o usuário pela id  
+**Quando** clico em "excluir"  
+**Então** o produto deve ser excluido com sucesso.
 
 ### Resultado esperado
 
-O usuário é criado e incluído na lista de usuários.
+O produto é excluído da lista de produtos.
 
 ---
 
-## CT08 - Listar, editar e excluir usuários
+## CT08 - Adiciona produto à lista de compras
 
 ### Prioridade: -- | Criticidade: --
 
 ### Pré-condição
 
-Deve estar logado como administrador e clicar em "Cadastrar Usuários".
+Deve estar logado como usuário normal, localizar o produto desejado e clicar em "Adicionar a lista".
 
-**Dado** que realizo o login como administrador 
-**E** acesso a funcionalidade "Cadastrar Usuários"  
-**E** possuo dados válidos e únicos para um novo usuário  
-**Quando** preencho os campos "nome", "email" e "senha"  
-**E** clico em "Cadastrar"  
-**Então** o usuário deve ser cadastrado com sucesso.
+**Dado** que realizo o login como usuário 
+**E** acesso a home da aplicação  
+**E** localizo um produto pelo nome  
+**Quando** clico em "Adicionar a lista" 
+**Então** sou direcionado para a pagina "/minhaListaDeProdutos".
 
 ### Resultado esperado
 
-O usuário é criado e incluído na lista de usuários.
+O produto selecionado é movido para a "Lista de Compras" na página "/minhaListaDeProdutos".
+
+---
+
+## CT09 - Aumenta quantidade de produto na lista de compras
+
+### Prioridade: -- | Criticidade: --
+
+### Pré-condição
+
+Deve estar logado como usuário normal, acessando a página da lista de produtos (/minhaListaDeProdutos).
+
+**Dado** que realizo o login como usuário 
+**E** acesso a home da aplicação  
+**E** clico em "Lista de Compras"  
+**Quando** clico em "+" 
+**Então** o valor visível deve alterar de "1" para "2".
+
+### Resultado esperado
+
+O produto selecionado na lista de comprar deve aumentar sua quantidade.
+
+---
+
+## CT10 - Diminui quantidade de produto na lista de compras
+
+### Prioridade: -- | Criticidade: --
+
+### Pré-condição
+
+Deve estar logado como usuário normal, acessando a página da lista de produtos (/minhaListaDeProdutos).
+
+**Dado** que realizo o login como usuário 
+**E** acesso a home da aplicação  
+**E** clico em "Lista de Compras"  
+**Quando** clico em "-" 
+**Então** o valor visível deve alterar de "2" para "1".
+
+### Resultado esperado
+
+O produto selecionado na lista de comprar deve diminuir sua quantidade.
+
+---
+
+## CT11 - Remove produto da lista de compras
+
+### Prioridade: -- | Criticidade: --
+
+### Pré-condição
+
+Deve estar logado como usuário normal, acessando a página da lista de produtos (/minhaListaDeProdutos).
+
+**Dado** que realizo o login como usuário 
+**E** acesso a home da aplicação  
+**E** clico em "Lista de Compras"  
+**Quando** clico em "Limpar Lista" 
+**Então** a lista deve ficar vazia e conter a mensagem "Seu carrinho está vazio".
+
+### Resultado esperado
+
+A lista de Compras deve ser esvaziada.

@@ -119,7 +119,7 @@ describe('Gerenciamento de produtos', () => {
   })
 
     // CT05
-  it('CT05 - Cadastra produto', () => {
+  it('CT05 - Cadastrar produto', () => {
 
     cy.get('[data-testid="cadastrarProdutos"]').click()
 
