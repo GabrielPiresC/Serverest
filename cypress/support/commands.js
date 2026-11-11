@@ -106,3 +106,13 @@ Cypress.Commands.add('alterarQuantidadeProduto', (produto, acao) => {
       }
     })
 })
+
+Cypress.Commands.add('excluirProdutoApi', (id, token) => {
+  return cy.request({
+    method: 'DELETE',
+    url: `https://serverest.dev/produtos/${id}`,
+    headers: {
+      Authorization: token
+    }
+  })
+})
