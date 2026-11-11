@@ -116,7 +116,7 @@ Deve estar logado como administrador e clicar em "Listar Produtos".
 
 **Dado** que realizo o login como administrador 
 **E** acesso a funcionalidade "Listar produtos"  
-**E** procuro o usuário pela id  
+**E** localizo o produto pelo nome  
 **Quando** clico em "editar"  
 **E** altero qualquer campo  
 **Quando** clico em "salvar"
@@ -142,7 +142,7 @@ Ao clicar no botão "Editar", a aplicação não permite prosseguir com a ediç�
 
 ### Pré-condição
 
-Deve estar logado como administrador e clicar em "Excluir Produto".
+Possuir um produto previamente cadastrado e estar autenticado como administrador.
 
 **Dado** que realizo o login como administrador 
 **E** acesso a funcionalidade "Listar produtos"  
@@ -222,7 +222,7 @@ O produto selecionado na lista de comprar deve diminuir sua quantidade.
 
 ### Pré-condição
 
-Deve estar logado como usuário normal, acessando a página da lista de produtos (/minhaListaDeProdutos).
+Deve estar logado como usuário normal, acessando a página da lista de produtos (/minhaListaDeProdutos) e existir pelo menos um produto na lista de compras.
 
 **Dado** que realizo o login como usuário 
 **E** acesso a home da aplicação  
