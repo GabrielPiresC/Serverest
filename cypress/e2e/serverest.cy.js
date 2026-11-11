@@ -107,10 +107,14 @@ describe('Cadastro de usuários', () => {
 describe('Gerenciamento de produtos', () => {    
   beforeEach(() => {
     cy.visit('https://front.serverest.dev/login')
-    
+
     cy.gerarUsuario('true').then((usuarioAdm) => {
 
       cy.criarUsuarioApi(usuarioAdm)
+
+      cy.loginApi(usuarioAdm).then((token) => {
+        cy.wrap(token).as('token')
+      })
 
       cy.fillLogin(usuarioAdm)
 
@@ -121,17 +125,28 @@ describe('Gerenciamento de produtos', () => {
     // CT05
   it('CT05 - Cadastrar produto', () => {
 
+    cy.intercept('POST', '**/produtos').as('cadastrarProduto')
+
     cy.get('[data-testid="cadastrarProdutos"]').click()
 
     cy.gerarProduto().then((produto) => {
 
       cy.fillProduct(produto)
 
+      cy.wait('@cadastrarProduto')
+        .its('response.statusCode')
+        .should('eq', 201)
+
       cy.request({
         method: 'GET',
-        url: `https://serverest.dev/produtos?nome=${produto.nome}`
+        url: 'https://serverest.dev/produtos',
+        qs: {
+          nome: produto.nome
+        }
       }).then((response) => {
         expect(response.status).to.eq(200)
+        expect(response.body.quantidade).to.eq(1)
+        expect(response.body.produtos[0].nome).to.eq(produto.nome)
       })
     })
   })
@@ -141,14 +156,17 @@ describe('Gerenciamento de produtos', () => {
 
     cy.gerarProduto().then((produto) => {
 
-      cy.criarProdutoApi(produto)
+      cy.get('@token').then((token) => {
 
-      cy.get('[data-testid="listar-produtos"]').click()
+        cy.criarProdutoApi(produto, token)
 
-      cy.contains('tr', produto.nome)
-        .within(() => {
-          cy.get('[data-testid="editar-produto"]').click()
-        })
+        cy.get('[data-testid="listar-produtos"]').click()
+
+        cy.contains('tr', produto.nome)
+          .within(() => {
+            cy.contains('button', 'Editar').click()
+          })
+      })
     })
   })
     
@@ -157,16 +175,19 @@ describe('Gerenciamento de produtos', () => {
 
     cy.gerarProduto().then((produto) => {
 
-      cy.criarProdutoApi(produto)
+      cy.get('@token').then((token) => {
 
-      cy.get('[data-testid="listar-produtos"]').click()
+        cy.criarProdutoApi(produto, token)
 
-      cy.contains('tr', produto.nome)
-        .within(() => {
-          cy.get('[data-testid="excluir-produto"]').click()
-        })
+        cy.get('[data-testid="listar-produtos"]').click()
 
-      cy.contains(produto.nome).should('not.exist')
+        cy.contains('tr', produto.nome)
+          .within(() => {
+            cy.contains('button', 'Excluir').click()
+          })
+
+        cy.contains('tr', produto.nome).should('not.exist')
+      })
     })
   })
 })
@@ -281,15 +302,14 @@ describe('Lista de compras', () => {
     })
 
     //CT11
-    it('CT11 - Remove produto da lista de compras', () => {
+    it('CT11 - Limpa todos os produtos da lista de compras', () => {
 
-      cy.get('@produto').then((produto) => {
-        cy.get('[data-testid="limparLista"]')
-          .click()
+      cy.get('[data-testid="limparLista"]')
+        .click()
 
-        cy.get('[data-testid="shopping-cart-empty-message"]')
-          .should('have.text', 'Seu carrinho está vazio')
-      })
+      cy.get('[data-testid="shopping-cart-empty-message"]')
+        .should('be.visible')
+        .and('have.text', 'Seu carrinho está vazio')
     })
   })
 })

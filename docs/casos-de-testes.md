@@ -2,7 +2,7 @@
 
 ## CT01 - Cadastrar usuário normal com sucesso
 
-### Prioridade: -- | Criticidade: --
+### Prioridade: Alta | Criticidade: Alta
 
 **Dado** que acesso a página inicial do ServeRest  
 **E** clico em "Cadastre-se"  
@@ -20,7 +20,7 @@ O cadastro deve ser realizado com sucesso, deve ser exibida a mensagem "Cadastro
 
 ## CT02 - Impede cadastro de email já existente
 
-### Prioridade: -- | Criticidade: --
+### Prioridade: Alta | Criticidade: Alta
 
 ### Pré-condição
 
@@ -42,7 +42,7 @@ O cadastro não deve ser realizado, a mensagem "Este email já está sendo usado
 
 ## CT03 - Cadastrar usuário administrador com sucesso
 
-### Prioridade: -- | Criticidade: --
+### Prioridade: Alta | Criticidade: Alta
 
 **Dado** que acesso a página inicial do ServeRest  
 **E** clico em "Cadastre-se"  
@@ -62,7 +62,7 @@ O cadastro deve ser realizado com sucesso, deve ser exibida a mensagem "Cadastro
 
 ## CT04 - Impedir cadastro de administrador com email já cadastrado
 
-### Prioridade: -- | Criticidade: --
+### Prioridade: Alta | Criticidade: Alta
 
 ### Pré-condição
 
@@ -85,7 +85,7 @@ O cadastro não deve ser realizado, a mensagem "Este email já está sendo usado
 
 ## CT05 - Cadastrar produto
 
-### Prioridade: -- | Criticidade: --
+### Prioridade: Alta | Criticidade: Alta
 
 ### Pré-condição
 
@@ -108,7 +108,7 @@ O produto é criado e incluído na lista de produtos.
 
 ## CT06 - Edita produto 
 
-### Prioridade: -- | Criticidade: --
+### Prioridade: Média | Criticidade: Alta
 
 ### Pré-condição
 
@@ -126,11 +126,19 @@ Deve estar logado como administrador e clicar em "Listar Produtos".
 
 O produto é salvo com as novas informações editadas.
 
+### Resultado obtido
+
+Ao clicar no botão "Editar", a aplicação não permite prosseguir com a edição do produto.
+
+**Status:** Bloqueado por defeito (pendente de confirmação na execução atual).
+
+**Observação:** A falha impede a conclusão do fluxo de edição e a validação do resultado esperado.
+
 ---
 
 ## CT07 - Exclui produto
 
-### Prioridade: -- | Criticidade: --
+### Prioridade: Alta | Criticidade: Alta
 
 ### Pré-condição
 
@@ -138,7 +146,7 @@ Deve estar logado como administrador e clicar em "Excluir Produto".
 
 **Dado** que realizo o login como administrador 
 **E** acesso a funcionalidade "Listar produtos"  
-**E** procuro o usuário pela id  
+**E** procuro o produto pelo nome  
 **Quando** clico em "excluir"  
 **Então** o produto deve ser excluido com sucesso.
 
@@ -150,7 +158,7 @@ O produto é excluído da lista de produtos.
 
 ## CT08 - Adiciona produto à lista de compras
 
-### Prioridade: -- | Criticidade: --
+### Prioridade: Alta | Criticidade: Alta
 
 ### Pré-condição
 
@@ -170,7 +178,7 @@ O produto selecionado é movido para a "Lista de Compras" na página "/minhaList
 
 ## CT09 - Aumenta quantidade de produto na lista de compras
 
-### Prioridade: -- | Criticidade: --
+### Prioridade: Média | Criticidade: Média
 
 ### Pré-condição
 
@@ -190,7 +198,7 @@ O produto selecionado na lista de comprar deve aumentar sua quantidade.
 
 ## CT10 - Diminui quantidade de produto na lista de compras
 
-### Prioridade: -- | Criticidade: --
+### Prioridade: Média | Criticidade: Média
 
 ### Pré-condição
 
@@ -208,9 +216,9 @@ O produto selecionado na lista de comprar deve diminuir sua quantidade.
 
 ---
 
-## CT11 - Remove produto da lista de compras
+## CT11 - Limpa todos os produtos da lista de compras.
 
-### Prioridade: -- | Criticidade: --
+### Prioridade: Média | Criticidade: Média
 
 ### Pré-condição
 
