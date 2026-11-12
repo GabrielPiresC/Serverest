@@ -106,3 +106,27 @@ Cypress.Commands.add('alterarQuantidadeProduto', (produto, acao) => {
       }
     })
 })
+
+Cypress.Commands.add('excluirProdutoApi', (id, token) => {
+  return cy.request({
+    method: 'DELETE',
+    url: `https://serverest.dev/produtos/${id}`,
+    headers: {
+      Authorization: token
+    }
+  }).then((response) => {
+    expect(response.status).to.eq(200)
+
+    return response.body
+  })
+})
+
+Cypress.Commands.add('excluirUsuarioApi', (id) => {
+  return cy.request({
+    method: 'DELETE',
+    url: `https://serverest.dev/usuarios/${id}`
+  }).then((response) => {
+    expect(response.status).to.eq(200)
+    return response.body
+  })
+})
