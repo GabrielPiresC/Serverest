@@ -130,9 +130,9 @@ O produto é salvo com as novas informações editadas.
 
 Ao clicar no botão "Editar", a aplicação não permite prosseguir com a edição do produto.
 
-**Status:** Bloqueado por defeito (pendente de confirmação na execução atual).
+**Status:** Bloqueado por defeito
 
-**Observação:** A falha impede a conclusão do fluxo de edição e a validação do resultado esperado.
+**Bug relacionado:** #3
 
 ---
 
