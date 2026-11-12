@@ -1,14 +1,33 @@
 describe('Cadastro de usuários', () => {
+  let usuarioId 
+
   beforeEach(() => {
+    usuarioId = undefined
+
       cy.visit('https://front.serverest.dev/login')
+  })
+
+  afterEach(() => {
+    if (usuarioId) {
+      cy.excluirUsuarioApi(usuarioId)
+    }
   })
 
     // CT01
   it('CT01 - Cadastra usuário normal com sucesso', () => {
+
+    cy.intercept('POST', '**/usuarios').as('cadastrarUsuario')
+
     cy.gerarUsuario().then((usuario) => {
 
       cy.get('[data-testid="cadastrar"]').click()
       cy.preencherCadastro(usuario)
+
+      cy.wait('@cadastrarUsuario').then((interception) => {
+        expect(interception.response.statusCode).to.eq(201)
+
+        usuarioId = interception.response.body._id
+      })
 
       cy.get('.alert')
         .should('be.visible')
@@ -24,7 +43,7 @@ describe('Cadastro de usuários', () => {
           password: usuario.password
         }
       }).then((response) => {
-          expect(response.status).to.eq(200)
+        expect(response.status).to.eq(200)
       })
     })
   })
@@ -33,7 +52,9 @@ describe('Cadastro de usuários', () => {
   it('CT02 - Impede cadastro de email já existente', () => {
     cy.gerarUsuario().then((usuario) => {
 
-      cy.criarUsuarioApi(usuario)
+      cy.criarUsuarioApi(usuario).then((response) => {
+        usuarioId = response._id
+      })
 
       cy.get('[data-testid="cadastrar"]').click()
       cy.preencherCadastro(usuario)
@@ -55,17 +76,26 @@ describe('Cadastro de usuários', () => {
 
     // CT03
   it('CT03 - Cadastra administrador com sucesso', () => {
+
+    cy.intercept('POST', '**/usuarios').as('cadastrarUsuario')
+
     cy.gerarUsuario('true').then((usuario) => {
 
       cy.get('[data-testid="cadastrar"]').click()
       cy.preencherCadastro(usuario)
+
+      cy.wait('@cadastrarUsuario').then((interception) => {
+        expect(interception.response.statusCode).to.eq(201)
+
+        usuarioId = interception.response.body._id
+      })
 
       cy.get('.alert')
         .should('be.visible')
         .and('contain.text', 'Cadastro realizado com sucesso')
 
       cy.url().should('include', '/admin/home')
-      
+
       cy.request({
         method: 'POST',
         url: 'https://serverest.dev/login',
@@ -83,7 +113,9 @@ describe('Cadastro de usuários', () => {
   it('CT04 - Impede cadastro de administrador com email existente', () => {
     cy.gerarUsuario('true').then((usuario) => {
 
-      cy.criarUsuarioApi(usuario)
+      cy.criarUsuarioApi(usuario).then((response) => {
+        usuarioId = response._id
+      })
 
       cy.get('[data-testid="cadastrar"]').click()
       cy.preencherCadastro(usuario)
@@ -104,13 +136,21 @@ describe('Cadastro de usuários', () => {
   })
 })
     
-describe('Gerenciamento de produtos', () => {    
+describe('Gerenciamento de produtos', () => {
+  let produtoId
+  let usuarioAdmId
+
   beforeEach(() => {
+    produtoId = undefined
+    usuarioAdmId = undefined
+
     cy.visit('https://front.serverest.dev/login')
 
     cy.gerarUsuario('true').then((usuarioAdm) => {
 
-      cy.criarUsuarioApi(usuarioAdm)
+      cy.criarUsuarioApi(usuarioAdm).then((response) => {
+        usuarioAdmId = response._id
+      })
 
       cy.loginApi(usuarioAdm).then((token) => {
         cy.wrap(token).as('token')
@@ -120,6 +160,30 @@ describe('Gerenciamento de produtos', () => {
 
       cy.url().should('include', '/admin/home')
     })
+  })
+
+  afterEach(() => {
+    if (produtoId) {
+      cy.get('@token').then((token) => {
+        cy.request({
+          method: 'GET',
+          url: `https://serverest.dev/produtos/${produtoId}`,
+          failOnStatusCode: false
+        }).then((response) => {
+          if (response.status === 200) {
+            cy.excluirProdutoApi(produtoId, token)
+          } else if (response.status === 400 || response.status === 404) {
+            cy.log('Produto já foi excluído')
+          } else {
+            throw new Error(`Erro inesperado: ${response.status}`)
+          }
+        })
+      })
+    }
+
+    if (usuarioAdmId) {
+      cy.excluirUsuarioApi(usuarioAdmId)
+    }
   })
 
     // CT05
@@ -133,9 +197,11 @@ describe('Gerenciamento de produtos', () => {
 
       cy.fillProduct(produto)
 
-      cy.wait('@cadastrarProduto')
-        .its('response.statusCode')
-        .should('eq', 201)
+      cy.wait('@cadastrarProduto').then((interception) => {
+        expect(interception.response.statusCode).to.eq(201)
+
+        produtoId = interception.response.body._id
+      })
 
       cy.request({
         method: 'GET',
@@ -158,7 +224,11 @@ describe('Gerenciamento de produtos', () => {
 
       cy.get('@token').then((token) => {
 
-        cy.criarProdutoApi(produto, token)
+        cy.criarProdutoApi(produto, token).then((response) => {
+          produtoId = response._id
+        })
+
+        cy.log(`Produto para limpeza: ${produtoId}`)
 
         cy.get('[data-testid="listar-produtos"]').click()
 
@@ -177,7 +247,9 @@ describe('Gerenciamento de produtos', () => {
 
       cy.get('@token').then((token) => {
 
-        cy.criarProdutoApi(produto, token)
+        cy.criarProdutoApi(produto, token).then((response) => {
+          produtoId = response._id
+        })
 
         cy.get('[data-testid="listar-produtos"]').click()
 
@@ -193,11 +265,23 @@ describe('Gerenciamento de produtos', () => {
 })
 
 describe('Lista de compras', () => {    
+  let usuarioId
+  let usuarioAdmId
+  let produtoId
+  let tokenAdm
+
   beforeEach(() => {
+    usuarioId = undefined
+    usuarioAdmId = undefined
+    produtoId = undefined
+    tokenAdm = undefined
+
     cy.visit('https://front.serverest.dev/login')
     
     cy.gerarUsuario().then((usuario) => {
-      cy.criarUsuarioApi(usuario)
+      cy.criarUsuarioApi(usuario).then((response) => {
+        usuarioId = response._id
+      })
 
       cy.fillLogin(usuario)
 
@@ -205,17 +289,38 @@ describe('Lista de compras', () => {
     })
 
     cy.gerarUsuario('true').then((usuarioAdm) => {
-      cy.criarUsuarioApi(usuarioAdm)
+      cy.criarUsuarioApi(usuarioAdm).then((response) => {
+        usuarioAdmId = response._id
+      })
 
       cy.loginApi(usuarioAdm).then((token) => {
-        
+        tokenAdm = token
+
         cy.gerarProduto().then((produto) => {
-          cy.criarProdutoApi(produto, token)
+          cy.criarProdutoApi(produto, token).then((response) => {
+            produtoId = response._id
+          })
 
           cy.wrap(produto).as('produto')
         })
       })
     })
+  })
+
+  afterEach(() => {
+
+    if (produtoId && tokenAdm) {
+      cy.excluirProdutoApi(produtoId, tokenAdm)
+    }
+
+    if (usuarioId) {
+      cy.excluirUsuarioApi(usuarioId)
+    }
+
+    if (usuarioAdmId) {
+      cy.excluirUsuarioApi(usuarioAdmId)
+    }
+
   })
 
   //CT08

@@ -114,5 +114,19 @@ Cypress.Commands.add('excluirProdutoApi', (id, token) => {
     headers: {
       Authorization: token
     }
+  }).then((response) => {
+    expect(response.status).to.eq(200)
+
+    return response.body
+  })
+})
+
+Cypress.Commands.add('excluirUsuarioApi', (id) => {
+  return cy.request({
+    method: 'DELETE',
+    url: `https://serverest.dev/usuarios/${id}`
+  }).then((response) => {
+    expect(response.status).to.eq(200)
+    return response.body
   })
 })
