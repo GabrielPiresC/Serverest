@@ -4,14 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cypress run",
+    "cy:open": "cypress open",
+    "test:api": "newman run postman/collections/serverest.postman_collection.json -e postman/environments/serverest.postman_environment.json"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
-    "cypress": "^16.1.1"
+    "cypress": "^16.1.1",
+    "newman": "^6.2.3"
   },
   "directories": {
     "doc": "docs"
