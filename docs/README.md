@@ -1,7 +1,11 @@
-[![Badge ServeRest](https://img.shields.io/badge/API-ServeRest-green)](https://github.com/ServeRest/ServeRest)
-![Cypress](https://img.shields.io/badge/Tests-Cypress-69D3A7)
-![Postman](https://img.shields.io/badge/API%20Tests-Postman-FF6C37)
-![Newman](https://img.shields.io/badge/Runner-Newman-orange)
+
+<a href="https://github.com/ServeRest/ServeRest">
+  <img src="https://img.shields.io/badge/API-ServeRest-green" alt="ServeRest">
+</a>
+<img src="https://img.shields.io/badge/Tests-Cypress-69D3A7" alt="Cypress">
+<img src="https://img.shields.io/badge/API%20Tests-Postman-FF6C37" alt="Postman">
+<img src="https://img.shields.io/badge/Runner-Newman-orange" alt="Newman">
+
 
 # 🧪 ServeRest - Testes Automatizados com Cypress e Postman
 
