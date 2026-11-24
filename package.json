@@ -6,7 +6,7 @@
   "scripts": {
     "test": "cypress run",
     "cy:open": "cypress open",
-    "test:api": "newman run postman/collections/ServeRest.postman_collection.json -e postman/environments/ServeRest.postman_environment.json"
+    "test:api": "newman run postman/collections/ServeRest.postman_collection.json -e postman/environments/Serverest.postman_environment.json"
   },
   "keywords": [],
   "author": "",
